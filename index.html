@@ -2,184 +2,178 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibrant QuickTask</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <title>To Do</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <style>
-        /* The "Magic" Background Animation */
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
         
         body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+        .card {
+            background: #eafffb;
+            width: 320px;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
-        .glass {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        h2 {
+            margin: 0;
+            font-weight: 600;
         }
         
-        .completed-text {
+        p {
+            margin: 6px 0 16px;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        input {
+            flex: 1;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        
+        button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #2563eb;
+        }
+        
+        .section {
+            margin-top: 18px;
+        }
+        
+        .section-title {
+            font-size: 12px;
+            color: #2563eb;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        li {
+            background: white;
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        li.completed {
             text-decoration: line-through;
-            opacity: 0.5;
+            color: #999;
         }
         
-        .task-item {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .actions button {
+            background: none;
+            color: #ef4444;
+            font-size: 16px;
+        }
+        
+        footer {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 12px;
+            color: #666;
         }
     </style>
 </head>
 
-<body class="min-h-screen py-10 px-4 flex items-center justify-center">
+<body>
 
-    <div class="w-full max-w-md glass shadow-2xl rounded-[2.5rem] overflow-hidden border border-white/20">
-        <div class="p-8">
-            <h1 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">Tasks</h1>
-            <p class="text-gray-500 mb-8 font-medium">What's the plan for today?</p>
+    <div class="card">
+        <h2>Tasks</h2>
+        <p>What’s the plan for today?</p>
 
-            <div class="flex gap-2 mb-10">
-                <input type="text" id="taskInput" placeholder="New task..." class="flex-1 px-5 py-4 bg-white/50 border-0 rounded-2xl focus:ring-4 focus:ring-blue-400/30 outline-none transition-all placeholder:text-gray-400">
-                <button onclick="addTask()" class="bg-gray-900 hover:bg-black text-white px-6 py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">
-                    Add
-                </button>
-            </div>
-
-            <div class="mb-8">
-                <h2 class="text-xs font-black text-blue-600 uppercase tracking-[0.2em] mb-4 ml-1">To Do</h2>
-                <ul id="activeList" class="space-y-3"></ul>
-            </div>
-
-            <div class="pt-6 border-t border-gray-200/50">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Completed</h2>
-                    <span id="completedCount" class="text-[10px] font-black bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full">0</span>
-                </div>
-                <ul id="completedList" class="space-y-3"></ul>
-            </div>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="New task..." />
+            <button onclick="addTask()">Add</button>
         </div>
 
-        <div class="bg-white/30 p-4 text-center">
-            <button onclick="clearAll()" class="text-[10px] font-bold text-gray-500 hover:text-red-500 uppercase tracking-widest transition-colors">
-                Reset Dashboard
-            </button>
+        <div class="section">
+            <div class="section-title">TO DO</div>
+            <ul id="todoList"></ul>
         </div>
+
+        <div class="section">
+            <div class="section-title">COMPLETED</div>
+            <ul id="completedList"></ul>
+        </div>
+
+        <footer>
+            Built with ❤️
+        </footer>
     </div>
 
     <script>
-        const taskInput = document.getElementById('taskInput');
-        const activeList = document.getElementById('activeList');
-        const completedList = document.getElementById('completedList');
-        const completedCount = document.getElementById('completedCount');
-
-        document.addEventListener('DOMContentLoaded', loadTasks);
-
         function addTask() {
-            const text = taskInput.value.trim();
+            const input = document.getElementById("taskInput");
+            const text = input.value.trim();
+
             if (!text) return;
-            createTaskUI(text, false);
-            save();
-            taskInput.value = '';
-        }
 
-        function createTaskUI(text, isCompleted) {
-            const li = document.createElement('li');
-            li.className = "task-item flex items-center gap-3 p-4 bg-white/60 rounded-2xl border border-white/40 shadow-sm hover:shadow-md";
-
+            const li = document.createElement("li");
             li.innerHTML = `
-                <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="moveTask(this)" 
-                    class="w-6 h-6 rounded-full border-gray-300 text-blue-500 focus:ring-blue-400 cursor-pointer transition-all">
-                <span class="flex-1 text-gray-700 font-semibold break-words ${isCompleted ? 'completed-text' : ''}">${text}</span>
-                <button onclick="deleteTask(this)" class="text-gray-300 hover:text-red-400 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-            `;
+        <span>${text}</span>
+        <div class="actions">
+          <button onclick="completeTask(this)">✔</button>
+        </div>
+      `;
 
-            if (isCompleted) {
-                completedList.appendChild(li);
-            } else {
-                activeList.appendChild(li);
-            }
-            updateCount();
+            document.getElementById("todoList").appendChild(li);
+            input.value = "";
         }
 
-        function moveTask(checkbox) {
-            const li = checkbox.closest('li');
-            const textSpan = li.querySelector('span');
-
-            // Add a small delay for a smoother "pop" animation
-            li.style.transform = "scale(0.95)";
-            setTimeout(() => {
-                if (checkbox.checked) {
-                    textSpan.classList.add('completed-text');
-                    completedList.prepend(li); // Put latest completed at top
-                } else {
-                    textSpan.classList.remove('completed-text');
-                    activeList.appendChild(li);
-                }
-                li.style.transform = "scale(1)";
-                save();
-                updateCount();
-            }, 150);
+        function completeTask(button) {
+            const li = button.parentElement.parentElement;
+            li.classList.add("completed");
+            li.querySelector(".actions").innerHTML = `
+        <button onclick="removeTask(this)">✖</button>
+      `;
+            document.getElementById("completedList").appendChild(li);
         }
 
-        function deleteTask(btn) {
-            const li = btn.closest('li');
-            li.style.transform = "translateX(20px)";
-            li.style.opacity = "0";
-            setTimeout(() => {
-                li.remove();
-                save();
-                updateCount();
-            }, 200);
+        function removeTask(button) {
+            const li = button.parentElement.parentElement;
+            li.remove();
         }
-
-        function updateCount() {
-            completedCount.innerText = completedList.children.length;
-        }
-
-        function clearAll() {
-            if (confirm('Clear all tasks and reset?')) {
-                activeList.innerHTML = '';
-                completedList.innerHTML = '';
-                save();
-                updateCount();
-            }
-        }
-
-        function save() {
-            const tasks = [];
-            document.querySelectorAll('li').forEach(li => {
-                tasks.push({
-                    text: li.querySelector('span').innerText,
-                    completed: li.querySelector('input').checked
-                });
-            });
-            localStorage.setItem('vibrant-tasks', JSON.stringify(tasks));
-        }
-
-        function loadTasks() {
-            const tasks = JSON.parse(localStorage.getItem('vibrant-tasks') || '[]');
-            tasks.forEach(t => createTaskUI(t.text, t.completed));
-        }
-
-        taskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTask();
-        });
     </script>
+
 </body>
 
 </html>
